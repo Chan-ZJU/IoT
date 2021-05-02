@@ -1,7 +1,9 @@
 var express = require("express")
 //var bodyParser = require("body-parser")
 var app = express()
-
+var id
+var alcohol = 0
+var gps = "0,0"
 //app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
@@ -22,11 +24,15 @@ app.all("*", function(req, res, next) {
 
 
 app.get("/device/addinfo",function(req,res){
-    var id = req.query.id
-    var alcohol = req.query.alcohol
-    var gps = req.query.gps
+     id = req.query.id
+     alcohol = req.query.alcohol
+     gps = req.query.gps
 
-    res.send([id,alcohol,gps]);
+    res.send([id,alcohol,gps])
 
+})
 
+app.post("/device/getstatus",function(req,res){
+    res.send({alcohol:alcohol,gps:gps.split(',').map(Number)})
+    res.end() 
 })
