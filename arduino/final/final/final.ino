@@ -2,10 +2,8 @@
 #include <ArduinoJson.h>
 #define COUNT_MAX_LIMIT 1000000
 #define interval_upload 8000 //上传和下发间隔
-#define BuzzerPin 53 //53孔蜂鸣器
-#define LED_PIN 13 //13 孔LED灯
 
-void upload(int *horn, int *light, int fall_whether, char* gps);
+void upload(int alcohol_whether, char* gps);
 //初始化3个参数
 void initialization_3param(void);
 //喇叭
@@ -16,7 +14,6 @@ void alcoholTest(void);
 void getGPS(void);
 
 
-int fall_before = 0;//记录之前一次是否倒下
 int ID = 1;
 int id = 1;
 int count = 0;
@@ -43,8 +40,6 @@ void setup() {
   // set the data rate for the SoftwareSerial port
   Serial3.begin(115200);
   // configure Arduino LED for
-  pinMode(LED_PIN, OUTPUT);
-  pinMode(BuzzerPin, OUTPUT);
   Serial3.println("AT");
   while (Serial3.available() <= 0);
   while (Serial3.available() > 0)
@@ -52,10 +47,8 @@ void setup() {
   Serial3.println("AT+CGNSPWR=1");
   while (Serial3.available() <= 0);
   while (Serial3.available() > 0) Serial.println(Serial3.readString());
-  digitalWrite(LED_PIN, 1);
   Serial.println("start"); 
   delay(120000);//等待接收卫星信号
-  digitalWrite(LED_PIN, 0);
 }
 
 void loop()
